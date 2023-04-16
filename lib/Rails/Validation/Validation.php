@@ -53,7 +53,7 @@ class Validation
     protected function _validate_format()
     {
         if (is_string($this->_params['with'])) {
-            return (bool)preg_match($this->_params['with'], $this->_data);
+            return (bool)preg_match($this->_params['with'], $this->_data ?? '');
         } elseif (is_callable($this->_params['with'])) {
             return call_user_func($this->_params['with'], $this->_data);
         } else {

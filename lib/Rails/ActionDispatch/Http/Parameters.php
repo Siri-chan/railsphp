@@ -15,13 +15,15 @@ class Parameters implements \IteratorAggregate
         # delete, put, post, get, patchVars (need to support head requests).
         $other_params = [];
     
+    private $page;
+    
     private $files;
     
     private $routeVars = [];
-    
-    public function getIterator()
+
+    public function getIterator(): \Traversable
     {
-        return new ArrayIterator($this->toArray());
+        return new \ArrayIterator($this->toArray());
     }
     
     public function __construct()
@@ -72,7 +74,7 @@ class Parameters implements \IteratorAggregate
             if ($var)
                 ${$var}[$prop] = $value;
             else
-                $this->$prop = $value;
+                $this->other_params[$prop] = $value;
         }
     }
     
@@ -191,7 +193,8 @@ class Parameters implements \IteratorAggregate
     {
         get_object_vars($this);
     }
-    
+
+    #[\ReturnTypeWillChange]
     public function toArray()
     {
         $obj_vars = get_object_vars($this);

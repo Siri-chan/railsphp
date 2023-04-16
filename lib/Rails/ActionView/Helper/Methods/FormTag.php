@@ -202,7 +202,7 @@ trait FormTag
         return implode("\n", $tags);
     }
     
-    private function _form_field_tag($field_type, $name = null, $value, array $attrs = [], $content_tag = false)
+    private function _form_field_tag($field_type, $name = null, $value = "", array $attrs = [], $content_tag = false)
     {
         !isset($attrs['id']) && $attrs['id'] = trim(str_replace(['[', ']', '()', '__'], ['_', '_', '', '_'], $name), '_');
         $name && $attrs['name'] = $name;

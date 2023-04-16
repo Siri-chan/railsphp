@@ -16,16 +16,16 @@ class GlobalVar extends Base
     
     public function offsetSet($offset, $value)
     {
-        global ${$this->_var_name};
+        global {$$this->_var_name};
         if ($offset === null)
-            ${$this->_var_name}[$this->_key_name][] = $value;
+            {$$this->_var_name}[$this->_key_name][] = $value;
         else
-            ${$this->_var_name}[$this->_key_name][$offset] = $value;
+            {$$this->_var_name}[$this->_key_name][$offset] = $value;
     }
     
     protected function _get_array()
     {
-        global ${$this->_var_name};
-        return ${$this->_var_name};
+        global {$$this->_var_name};
+        return {$$this->_var_name};
     }
 }

@@ -7,14 +7,14 @@ use Rails\ActiveRecord\Schema\SchemaMigration as STable;
 class Migrator
 {
     protected $connection;
-    
+
     protected $migrationsTableName = 'schema_migrations';
-    
+
     public function __construct()
     {
         $this->connection = \Rails\ActiveRecord\ActiveRecord::connection();
     }
-    
+
     /**
      * db:migrate
      */
@@ -23,14 +23,14 @@ class Migrator
         $this->ensureMigrationsTable();
         STable::setConnection($this->connection);
         STable::setTableName($this->migrationsTableName);
-        
+
         $pending = $this->getPendingMigrations();
-        
+
         foreach ($pending as $version) {
             $this->runUp($version);
         }
     }
-    
+
     public function runSeeds()
     {
         if ($this->getPendingMigrations()) {
@@ -41,51 +41,51 @@ class Migrator
             require $file;
         }
     }
-    
+
     public function runUp($version)
     {
         $patt = $this->migrationsDir() . '/' . $version . '_*.php';
         $files = glob($patt);
-        
+
         if (!$files) {
             throw new Exception\RuntimeException(
                 sprintf("Migration file for version %s not found", $version)
             );
         }
-        
+
         $file = $files[0];
-        require $file;
-        
-        $classes = get_declared_classes();
-        $className = array_pop($classes);
-        unset($classes);
-        
-        $migrator = new $className();
-        $migrator->up();
-        
+        $class = require $file;
+
+        #$classes = get_declared_classes();
+        #$className = array_pop($classes);
+        #unset($classes);
+
+        #$migrator = new $className();
+        $class->up();
+
         STable::create([
             'version' => $version
         ]);
     }
-    
+
     public function loadSchema()
     {
         $file = Rails::root() . '/db/schema.sql';
-        
+
         $dumper = new \Rails\ActiveRecord\Schema\Dumper(
             $this->connection
         );
-        
+
         $dumper->import($file);
     }
-    
+
     protected function getPendingMigrations()
     {
         $ranVersions = STable::all()->getAttributes('version');
         $availableVersions = $this->getAvailableMigrations();
         return array_diff($availableVersions, $ranVersions);
     }
-    
+
     protected function ensureMigrationsTable()
     {
         if (!$this->connection->tableExists($this->migrationsTableName)) {
@@ -96,12 +96,12 @@ class Migrator
             $schema->addIndex($this->migrationsTableName, 'version', ['unique' => true]);
         }
     }
-    
+
     protected function setConnection(\Rails\ActiveRecord\Connection $connection)
     {
         $this->connection = $connection;
     }
-    
+
     protected function getAvailableMigrations()
     {
         $path = $this->migrationsDir();
@@ -114,7 +114,7 @@ class Migrator
         }
         return $versions;
     }
-    
+
     protected function migrationsDir()
     {
         return Rails::root() . '/db/migrate';

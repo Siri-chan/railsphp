@@ -9,7 +9,7 @@ class Collection implements \ArrayAccess, \Iterator
     /* ArrayAccess { */
     protected $members = array();
     
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         if (is_null($offset)) {
             $this->members[] = $value;
@@ -18,46 +18,46 @@ class Collection implements \ArrayAccess, \Iterator
         }
     }
     
-    public function offsetExists($offset)
+    public function offsetExists($offset): bool
     {
         return isset($this->members[$offset]);
     }
     
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         unset($this->members[$offset]);
     }
     
-    public function offsetGet($offset)
+    public function offsetGet($offset): mixed
     {
         return isset($this->members[$offset]) ? $this->members[$offset] : null;
     }
     /* } Iterator {*/
     protected $position = 0;
     
-    public function rewind()
+    public function rewind():void
     {
         reset($this->members);
         $this->position = key($this->members);
     }
 
-    public function current()
+    public function current():mixed
     {
         return $this->members[$this->position];
     }
 
-    public function key()
+    public function key():mixed
     {
         return key($this->members);
     }
 
-    public function next()
+    public function next():void
     {
         next($this->members);
         $this->position = key($this->members);
     }
 
-    public function valid()
+    public function valid():bool
     {
         return array_key_exists($this->position, $this->members);
     }

@@ -9,6 +9,7 @@ class Error extends Base
     private
         $_e,
         $_buffer = '',
+        $_params,
         $_report;
 
     /**

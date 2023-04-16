@@ -198,8 +198,7 @@ final class Rails
         return self::$console;
     }
 
-    static public function errorHandler($errno, $errstr, $errfile, $errline, $errargs)
-    {
+    static public function errorHandler($errno, $errstr, $errfile, $errline) {
         $errtype = '';
 
         switch ($errno) {
@@ -244,7 +243,7 @@ final class Rails
         if (strpos($errfile, self::$path) === 0)
             $errfile = 'Rails' . substr($errfile, strlen(self::$path));
 
-        $extra_params = ['php_error' => true, 'errno' => $errno, 'errstr' => $errstr, 'errfile' => $errfile, 'errline' => $errline, 'errargs' => $errargs];
+        $extra_params = ['php_error' => true, 'errno' => $errno, 'errstr' => $errstr, 'errfile' => $errfile, 'errline' => $errline];
 
         if ($errtype)
             $errtype .= ': ';
@@ -255,7 +254,11 @@ final class Rails
 
         $e->error_data($extra_params);
 
-        throw $e;
+        if ($errno == E_WARNING || $errno == E_NOTICE || $errno == E_RECOVERABLE_ERROR || $errno == E_USER_NOTICE || $errno == E_USER_WARNING) {
+            echo $e;
+        } else {
+            throw $e;
+        }
     }
 
     static public function exceptionHandler($e)

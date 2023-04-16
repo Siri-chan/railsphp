@@ -180,14 +180,28 @@ abstract class Base extends ActionController
     {
         return $this->render_params || $this->redirect_params;
     }
-    
+
+    public function getLocal($name)
+    {
+        if (!$this->localExists($name)) {
+            throw new Exception\RuntimeException(
+                sprintf("Undefined local '%s'", $name)
+            );
+        }
+
+        if ($this->locals instanceof stdClass) {
+            return $this->locals->$name;
+        } else {
+            return $this->locals[$name];
+        }
+    }
+
     public function setLocal($name, $value)
     {
-        if (is_array($value)) {
-            $this->_array_names[] = $name;
-            $this->$name = $value;
-        } else {
+        if ($this->locals instanceof stdClass) {
             $this->locals->$name = $value;
+        } else {
+            $this->locals[$name] = $value;
         }
         return $this;
     }
@@ -460,7 +474,7 @@ abstract class Base extends ActionController
                     $params = [];
                 }
                 
-                if ($this->canRunFilterMethod($params, $type) && !in_array($methodName, $ranMethods)) {
+                if ($this->canRunFilterMethod($params) && !in_array($methodName, $ranMethods)) {
                     $this->$methodName();
                     /**
                      * Before-filters may set response params. Running filters stop if one of them does.
@@ -523,7 +537,7 @@ abstract class Base extends ActionController
         $this->layout(Rails::application()->config()->action_view->layout);
     }
     
-    private function canRunFilterMethod(array $params = [], $filter_type)
+    private function canRunFilterMethod(array $params = [])
     {
         $action = Rails::services()->get('inflector')->camelize($this->request()->action(), false);
         

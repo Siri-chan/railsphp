@@ -531,7 +531,7 @@ class Mapper
         $this->addRoute($this->createRoute($url, $to, $params));
     }
     
-    private function createRouteWithVerb($via, $url, $to = null, array $params)
+    private function createRouteWithVerb($via, $url, $to = null, array $params = array())
     {
         if (is_array($to)) {
             $params = $to;
@@ -545,7 +545,7 @@ class Mapper
                 if (preg_match('/^[\w\/]+$/', $url)) {
                     $alias = str_replace('/', '_', $url);
                 }
-                $alias .= '_' . implode($this->resources, '_');
+                $alias .= '_' . implode('_', $this->resources);
                 if (!$this->createAsCollection) {
                     $alias = Rails::services()->get('inflector')->singularize($alias);
                 }

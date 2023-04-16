@@ -7,6 +7,7 @@ use Rails\ActionView;
 class Inline extends Base
 {
     private $_template;
+    public $_params;
     
     public function _render_view()
     {

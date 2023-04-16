@@ -23,6 +23,8 @@ class ModelSchema
     protected $primaryKey;
     
     protected $columnDefaults;
+
+    protected $columns;
     
     public function __construct($name, Connection $connection)
     {

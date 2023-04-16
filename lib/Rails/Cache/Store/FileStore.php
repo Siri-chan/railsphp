@@ -84,6 +84,6 @@ class FileStore extends AbstractStore
     
     protected function getEntry($key, array $params)
     {
-        return new Entry($key, $params, $this);
+        return new Entry($key, $this, $params);
     }
 }

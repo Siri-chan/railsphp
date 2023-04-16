@@ -29,7 +29,7 @@ class Parser
         $error = null;
 
         try {
-            if (function_exists('yaml_parse')) {
+            if (function_exists('yaml_parse_file')) {
                 return yaml_parse_file($this->filepath);
             } else {
                 return SfYaml::parse(file_get_contents($this->filepath));

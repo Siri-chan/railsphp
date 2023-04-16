@@ -5,7 +5,7 @@ use Rails\ArrayHelper\GlobalVar;
 
 class Session implements \IteratorAggregate
 {
-    public function getIterator()
+    public function getIterator(): \Traversable
     {
         return new \ArrayIterator($_SESSION);
     }

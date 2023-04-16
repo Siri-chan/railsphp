@@ -42,7 +42,7 @@ class RouteSet implements IteratorAggregate
         $this->routes = new ArrayObject();
     }
     
-    public function getIterator()
+    public function getIterator(): \Traversable
     {
         return $this->routes;
     }

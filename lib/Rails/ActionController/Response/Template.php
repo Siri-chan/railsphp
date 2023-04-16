@@ -7,6 +7,7 @@ use Rails\ActionView;
 class Template extends Base
 {
     private $_xml;
+    protected $_params;
     
     protected $renderer;
     

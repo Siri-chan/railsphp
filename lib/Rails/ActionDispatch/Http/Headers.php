@@ -100,18 +100,18 @@ class Headers
         if (!$this->_content_type) {
             $this->_set_default_content_type();
         }
-        header($this->_content_type);
+        header($this->_content_type ?? '');
         // vpe($this->_content_type);
         foreach ($this->headers as $name => $value) {
             if (!is_int($name))
                 $value = $name . ': ' . $value;
-            header($value);
+            header($value ?? '');
         }
         
         if (is_int($this->status))
-            header('HTTP/1.1 ' . $this->status);
+            header('HTTP/1.1 ' . $this->status ?? '');
         else
-            header($this->status);
+            header($this->status ?? '');
         
         $this->status_sent = true;
     }

@@ -94,7 +94,7 @@ class Validator extends RailsValidation
     
     protected function _validate_presence()
     {
-        $property = trim($this->_model->{$this->_property});
+        $property = trim($this->_model->{$this->_property} ?? '');
         return !empty($property);
     }
     

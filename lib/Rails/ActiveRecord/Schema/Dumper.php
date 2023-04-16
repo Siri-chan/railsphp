@@ -6,6 +6,8 @@ class Dumper
     protected $outputFile;
     
     protected $dumper;
+
+    protected $connection;
     
     public function __construct($connection, $dumper = null, $outputFile = null)
     {

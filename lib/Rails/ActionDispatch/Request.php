@@ -25,7 +25,7 @@ class Request
      */
     public function path()
     {
-        return substr($this->originalPath(), strlen(\Rails::application()->router()->basePath()));
+        return substr($this->originalPath(), strlen(\Rails::application()->router()->basePath() ?? ''));
     }
     
     /**
@@ -49,7 +49,7 @@ class Request
      */
     public function fullPath()
     {
-        return substr($this->get('REQUEST_URI'), strlen(\Rails::application()->router()->basePath()));
+        return substr($this->get('REQUEST_URI'), strlen(\Rails::application()->router()->basePath() ?? ''));
     }
     
     /**
